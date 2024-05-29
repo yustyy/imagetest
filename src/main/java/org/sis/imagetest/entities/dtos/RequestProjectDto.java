@@ -13,8 +13,6 @@ import java.util.Date;
 @Builder
 public class RequestProjectDto {
     private int id;
-    private String name;
-    private String description;
-    private Date date;
-
+    private float translation_x;
+    private float translation_y;
 }

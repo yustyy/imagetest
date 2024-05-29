@@ -1,6 +1,7 @@
 package org.sis.imagetest.webAPI.controllers;
 
 
+import org.apache.coyote.Response;
 import org.sis.imagetest.business.abstracts.ProjectService;
 import org.sis.imagetest.core.results.DataResult;
 import org.sis.imagetest.core.results.Result;
@@ -35,7 +36,7 @@ public class ProjectController {
         return projectService.getProjects(numberOfProjects);
     }
     @GetMapping("/getById")
-    public DataResult<Project> getProjectById(@RequestParam int id){
+    public DataResult<ResponseProjectDto> getProjectById(@RequestParam int id){
         return projectService.getProjectById(id);
     }
     @PostMapping("/delete")

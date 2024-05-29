@@ -12,4 +12,6 @@ public class ProjectMessages {
     public static String deleteProjectsuccess = "Proje başarıyla silindi!";
     public static String projectNotFound = "Proje bulunamadı!";
     public static String PorjectsNotFound = "Projeler bulunamadı!";
+    public static String translationYCanotBeNull = "Proje y ekseni boş olamaz!";
+    public static String translationXCanotBeNull = "Proje x ekseni boş olamaz!";
 }

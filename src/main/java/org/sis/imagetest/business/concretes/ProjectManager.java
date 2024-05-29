@@ -34,14 +34,11 @@ public class ProjectManager implements ProjectService {
     @Override
     public Result addProject(RequestProjectDto requestProjectDto, MultipartFile image) {
 
-        if (requestProjectDto.getName() == null){
-            return new ErrorResult(ProjectMessages.nameCanotBeNull);
+        if (requestProjectDto.getTranslation_x() == 0){
+            return new ErrorResult(ProjectMessages.translationXCanotBeNull);
         }
-        if (requestProjectDto.getDescription() == null){
-            return new ErrorResult(ProjectMessages.descriptionCanotBeNull);
-        }
-        if (requestProjectDto.getDate() == null){
-            return new ErrorResult(ProjectMessages.dateCanotBeNull);
+        if (requestProjectDto.getTranslation_y() == 0){
+            return new ErrorResult(ProjectMessages.translationYCanotBeNull);
         }
 
         Image projectImage = null;
@@ -56,9 +53,9 @@ public class ProjectManager implements ProjectService {
         }
 
         var projectToSave = Project.builder()
-                .name(requestProjectDto.getName())
-                .description(requestProjectDto.getDescription())
                 .image(projectImage)
+                .translationY(requestProjectDto.getTranslation_y())
+                .translationX(requestProjectDto.getTranslation_x())
                 .build();
 
         projectDao.save(projectToSave);
@@ -88,17 +85,6 @@ public class ProjectManager implements ProjectService {
             if (project == null){
                 return new ErrorResult(ProjectMessages.projectNotFound);
             }
-            if (requestProjectDto.getName() == null){
-                return new ErrorResult(ProjectMessages.nameCanotBeNull);
-            }
-            if (requestProjectDto.getDescription() == null){
-                return new ErrorResult(ProjectMessages.descriptionCanotBeNull);
-            }
-
-
-            project.setName(requestProjectDto.getName().isEmpty() ? project.getName() : requestProjectDto.getName());
-            project.setDescription(requestProjectDto.getDescription().isEmpty() ? project.getDescription() : requestProjectDto.getDescription());
-            //project.setContext(requestProjectDto.getContext().isEmpty() ? project.getContext() : requestProjectDto.getContext());
 
             projectDao.save(project);
 
@@ -123,9 +109,9 @@ public class ProjectManager implements ProjectService {
 
         var projectResult = result.stream().map(project -> ResponseProjectDto.builder()
                 .id(project.getId())
-                .name(project.getName())
-                .description(project.getDescription())
-                .imageUrl(project.getImage()==null? null : API_URL+"/api/images/getImageByUrl/"+project.getImage().getImageUrl())
+                .image_url(project.getImage()==null? null : API_URL+"/api/images/getImageByUrl/"+project.getImage().getImageUrl())
+                .translation_x(project.getTranslationX())
+                .translation_y(project.getTranslationY())
                 .build())
                 .toList();
 
@@ -133,14 +119,21 @@ public class ProjectManager implements ProjectService {
     }
 
     @Override
-    public DataResult<Project> getProjectById(int id) {
+    public DataResult<ResponseProjectDto> getProjectById(int id) {
         var result = projectDao.findById(id);
 
         if(result == null){
             return new ErrorDataResult<>(ProjectMessages.projectNotFound);
         }
 
-        return new SuccessDataResult<Project>(result, ProjectMessages.getProjectSuccess);
+        var project = ResponseProjectDto.builder()
+                .id(result.getId())
+                .image_url(result.getImage()==null? null : API_URL+"/api/images/getImageByUrl/"+result.getImage().getImageUrl())
+                .translation_x(result.getTranslationX())
+                .translation_y(result.getTranslationY())
+                .build();
+
+        return new SuccessDataResult<ResponseProjectDto>(project, ProjectMessages.getProjectSuccess);
     }
     //dont repeat yourself chain
     @Override

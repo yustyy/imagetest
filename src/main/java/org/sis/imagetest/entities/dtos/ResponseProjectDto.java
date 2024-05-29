@@ -15,11 +15,10 @@ public class ResponseProjectDto {
 
     private int id;
 
-    private String name;
+    private String image_url;
 
-    private String description;
+    private float translation_x;
 
-    private Date date;
+    private float translation_y;
 
-    private String imageUrl;
 }

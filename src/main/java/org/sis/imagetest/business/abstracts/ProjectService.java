@@ -17,7 +17,7 @@ public interface ProjectService {
 
     DataResult <List<ResponseProjectDto>> getProjects(Optional<Integer> numberOfProjects);
 
-    DataResult<Project> getProjectById(int id);
+    DataResult<ResponseProjectDto> getProjectById(int id);
 
     Result deleteProject(int id);
 
